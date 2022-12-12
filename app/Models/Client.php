@@ -9,10 +9,11 @@ class Client extends User
 {
     use HasFactory;
 
-    protected $table = 'client';
+    protected $table = 'clients';
 
     protected $fillable = [
         'balance',
+        'id',
     ];
 
     public function user()
@@ -20,8 +21,5 @@ class Client extends User
         return $this->belongsTo(User::class);
     }
 
-    public function historic_balance()
-    {
-        return $this->belongsTo(HistoricBalance::class);
-    }
+
 }

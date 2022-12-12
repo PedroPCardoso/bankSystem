@@ -6,35 +6,77 @@ use Illuminate\Http\Request;
 
 use App\Models\Client;
 use App\Models\HistoricBalance;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\{CreateHistoricBalanceRequest, UpdateHistoricBalanceRequest};
+use App\Repositories\HistoricBalanceRepository;
 
-class HistoricBalanceController extends Controller
+
+class HistoricBalanceController extends BaseController
 {
-   public function index(){
-        $historics = HistoricBalance::paginate(8);
+    /** @var  HistoricBalanceRepository */
+    private $HistoricBalanceRepository;
 
-        return Inertia::render("HistoricBalance/index", ["historics" => $historics]);
+    public function __construct(HistoricBalanceRepository $HistoricBal)
+    {
+        $this->HistoricBalanceRepository = $HistoricBal;
+    }
+   public function index()
+   {
+        $user = Auth::user();
+        $profile= Client::where("user_id", $user->id)->first();
+        $historics = $this-> HistoricBalanceRepository->allQuery([
+            "client_id" => $profile->id,
+        ])->paginate(8);
+        return $this->sendResponse("HistoricBalance/index", ["historics" => $historics]);
 
    }
 
    public function create()
     {
-        return Inertia::render('HistoricBalance/create');
+        return $this->sendResponse("HistoricBalance/create");
     }
 
-   public function store(Request $request){
- 
-        HistoricBalance::create(
-            [
-                'amount'=> $request->amount,
-                'type'=>$request->type,
-                'Description' =>$request->Description
-            ]
-            );
-        return Redirect::route('posts.Index');
-   }
+   public function store(CreateHistoricBalanceRequest $request){
+       
+        $historics = $this-> HistoricBalanceRepository->create($request);
+    
+        return $this->sendResponse("HistoricBalance/index");
+    }
    public function show($id,Request $request){
 
    }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\HistoricBalance  $HistoricBalance
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(HistoricBalance $HistoricBalance)
+    {
+        return $this->sendResponse("HistoricBalance/edit",
+            [
+                'HistoricBalance' => [
+                    'id' => $HistoricBalance->id,
+                    'amount' => $HistoricBalance->amount,
+                    'Description' => $HistoricBalance->Description
+                ]
+            ]
+    
+    );
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\HistoricBalance  $HistoricBalance
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id, UpdateHistoricBalanceRequest $request)
+    {
+        $input = $request->all();
+
+        $historic = $this->HistoricBalanceRepository->update($input, $id);
+
+        return $this->sendResponse("HistoricBalance/index");
+    }
 }

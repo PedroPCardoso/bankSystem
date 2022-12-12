@@ -13,13 +13,11 @@ class CreateClientTable extends Migration
      */
     public function up()
     {
-        Schema::create('client', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('historic_balance_id');
             $table->float('balance');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('historic_balance_id')->references('id')->on('historic_balances');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateClientTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client');
+        Schema::dropIfExists('clients');
     }
 }

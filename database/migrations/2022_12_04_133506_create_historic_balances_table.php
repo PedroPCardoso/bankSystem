@@ -16,9 +16,12 @@ class CreateHistoricBalancesTable extends Migration
         Schema::create('historic_balances', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->unsignedBigInteger('client_id');
             $table->string("Description");
             $table->integer("type");
             $table->float("amount");
+            $table->foreign('client_id')->references('id')->on('clients');
+
         });
     }
 

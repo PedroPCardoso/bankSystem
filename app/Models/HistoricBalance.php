@@ -15,4 +15,15 @@ class HistoricBalance extends Model
         'type',
         'Description',
     ];
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public static $rules = [
+        'Description' => ['required', 'max:90'],
+        'amount' => ['required'],
+        'type' => ['required']
+    ];
+    
 }
