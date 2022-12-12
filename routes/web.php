@@ -36,7 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('historics', HistoricBalanceController::class);
+Route::resource('historics', HistoricBalanceController::class)->middleware(['auth', 'verified']);
+
 
 
 

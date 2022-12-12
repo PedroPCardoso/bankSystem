@@ -14,6 +14,7 @@ class HistoricBalance extends Model
         'amount',
         'type',
         'Description',
+        'client_id',
     ];
     public function client()
     {

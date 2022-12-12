@@ -1,4 +1,7 @@
 <template>
+    <div>
+        <h4>Balance: {{balance}}</h4>
+    </div>
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
@@ -28,7 +31,7 @@
                                     <td class="px-4 py-2">  {{ historic.Description }}</td>
                                     <td class="px-4 py-2">{{ historic.amount }}</td>
                                     <td class="px-4 py-2 font-extrabold">
-                                        <Link class="text-green-700" :href="route('historics.edit', historic.id)">
+                                        <Link class="text-green-700" :href="route('historics.create', historic.id)">
                                         Edit
                                         </Link>
                                         <Link @click="destroy(historic.id)" class="text-red-700">Delete</Link>
@@ -48,6 +51,7 @@ import { inject, reactive } from "vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { Link } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
+
 export default {
     components: {
         // BreezeAuthenticatedLayout,
@@ -57,13 +61,14 @@ export default {
     },
     props: {
         historics: Object,
+        balance:Number,
     },
     setup() {
         const route = inject('$route');
     },
     methods:{
         go(id){
-            Inertia.post(route('historics.edit'), id);
+            Inertia.get(route('historics.edit'), id);
         },
         create() {
             Inertia.get(route('historics.create'));

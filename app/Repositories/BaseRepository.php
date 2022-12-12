@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 
 abstract class BaseRepository
@@ -17,6 +18,8 @@ abstract class BaseRepository
      * @var Application
      */
     protected $app;
+    protected $profile;
+
 
     private $with = [];
     private $whereBetween = [];
@@ -30,9 +33,10 @@ abstract class BaseRepository
     {
         $this->app = $app;
         $this->makeModel();
+
     }
 
-    /**
+    /**"
      * Get searchable fields array
      *
      * @return array

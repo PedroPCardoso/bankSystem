@@ -19,7 +19,8 @@ class HistoricBalanceRepository extends BaseRepository
     protected $fieldSearchable = [
         'amount',
         'type',
-        'Description'
+        'Description',
+        'client_id'
     ];
 
     /**

@@ -20,7 +20,7 @@
                     </div>
                     <div>
                         <label for="title">Description</label>
-                        <textarea name="description" type="text" v-model="form.description" class="
+                        <textarea name="description" type="text" v-model="form.Description" class="
                                         w-full
                                         px-4
                                         py-2

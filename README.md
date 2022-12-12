@@ -1,4 +1,5 @@
-
+Client::factory()->count(10)->create();
+HistoricBalance::factory()->count(10)->create();
 
 ## Tecnologias que foram utilizadas
 * Tailwind
@@ -6,3 +7,4 @@
 * Vue
 * Javascript
 * PHP (Laravel)
+
