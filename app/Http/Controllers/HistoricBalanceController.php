@@ -29,14 +29,14 @@ class HistoricBalanceController extends BaseController
 
         $historics = $this-> HistoricBalanceRepository->allQuery([
             "client_id" => $this->profile->id,
-        ])->paginate(8);
+        ])->orderBy("created_at","desc")->paginate(8);
         return $this->sendResponse("HistoricBalance/index", ["historics" => $historics,"balance"=>$this->profile->balance]);
 
    }
 
-   public function create()
+   public function create(Request $request)
     {
-        return $this->sendResponse("HistoricBalance/create",[]);
+        return $this->sendResponse("HistoricBalance/create",["type"=> $request->type]);
     }
 
    public function store(CreateHistoricBalanceRequest $request){

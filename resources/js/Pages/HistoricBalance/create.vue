@@ -38,7 +38,7 @@
                         <div class="inline-block relative w-64">
                             <label for="title">Type</label>
 
-                            <select v-model="form.type" 
+                            <select :disabled="true" v-model="form.type" 
                                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                                 <option value="1">Payment</option>
                                 <option value="2">Deposit</option>
@@ -73,17 +73,26 @@ export default {
     components: {
         Head,
     },
+    props:{
+        type:Number,
+    },
     setup() {
         const form = useForm({
             Description: null,
             amount: null,
             type: null,
         });
-
         return { form };
+    },
+    created(){
+        this.form.type= this.type
     },
     methods: {
         submit() {
+            console.log(this.type);
+            console.log(this.form);
+            console.log("this.type");
+
             this.form.post(route("historics.store"));
         },
     },

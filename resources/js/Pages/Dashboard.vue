@@ -1,8 +1,27 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
-</script>
 
+
+</script>
+<script>
+import indexHistoric from '@/Pages/HistoricBalance/index.vue';
+import { inject, reactive } from "vue";
+export default {
+    components: {
+        // BreezeAuthenticatedLayout,
+        Head,
+    },
+    props: {
+        historics: Object,
+        balance: Number,
+
+    },
+    methods: {
+
+    }
+}
+</script>
 <template>
     <Head title="Dashboard" />
 
@@ -10,9 +29,12 @@ import { Head } from '@inertiajs/inertia-vue3';
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
         </template>
-        <indexHistoric>
+        <div>
 
-        </indexHistoric>
+            <indexHistoric :historics="historics" :balance="balance">
+    
+            </indexHistoric>
+        </div>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
