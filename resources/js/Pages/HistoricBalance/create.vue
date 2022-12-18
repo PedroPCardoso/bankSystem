@@ -35,6 +35,9 @@
                                                                     focus:ring-blue-600
                                                                 " />
                         </div>
+                    
+
+                        <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
                         <div class="inline-block relative w-64">
                             <label for="title">Type</label>
 
@@ -81,6 +84,7 @@ export default {
             Description: null,
             amount: null,
             type: null,
+            receipt:null
         });
         return { form };
     },
@@ -95,6 +99,13 @@ export default {
 
             this.form.post(route("historics.store"));
         },
+        uploadImage(event) {
+            console.log(event);
+            this.form.receipt = event.target.files[0];
+            this.form.post(route("uploads.store"));
+
+        
+        }
     },
 };
 </script>

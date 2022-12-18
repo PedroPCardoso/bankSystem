@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HistoricBalanceController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,7 +37,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('historics', HistoricBalanceController::class)->middleware(['auth', 'verified']);
-
+Route::post('uploads', [UploadController::class, 'store'])->name('uploads.store');
 
 
 
