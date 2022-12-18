@@ -9,6 +9,7 @@ use App\Models\HistoricBalance;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\{CreateHistoricBalanceRequest, UpdateHistoricBalanceRequest};
 use App\Repositories\HistoricBalanceRepository;
+use Illuminate\Support\Facades\Storage;
 
 
 class HistoricBalanceController extends BaseController
@@ -44,9 +45,9 @@ class HistoricBalanceController extends BaseController
         $this->profile = Client::where("user_id", $user->id)->first();
         $input = $request->all();
         $input['client_id'] = $this->profile->id;
-        
-        $historics = $this-> HistoricBalanceRepository->create($input);
 
+        $input['receipt'] = $request->file('receipt')->store('receipts', 'public');
+        $historics = $this-> HistoricBalanceRepository->create($input);
 
         $historics = $this->HistoricBalanceRepository->allQuery([
             "client_id" => $this->profile->id,
