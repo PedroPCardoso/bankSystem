@@ -4,6 +4,7 @@
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    <h1>Add new {{title}}</h1>
                     <form @submit.prevent="submit">
                      
                         <div class="mt-4">
@@ -37,7 +38,7 @@
                         </div>
                     
 
-                        <input type="file"  ref="photo" accept="image/*" @change="uploadImage($event)" id="file-input">
+                        <input type="file" v-if="type=='1'" ref="photo" accept="image/*" @change="uploadImage($event)" id="file-input">
                         <img v-if="url" :src="url" class="w-full mt-4 h-80" />
                         <div class="inline-block relative w-64">
                             <label for="title">Type</label>
@@ -84,8 +85,7 @@ export default {
         const form = useForm({
             Description: null,
             amount: null,
-            type: null,
-            receipt:null
+            type: null
         });
         return { form };
     },
@@ -96,6 +96,7 @@ export default {
     },
     created(){
         this.form.type= this.type
+        this.title = this.type=='1' ? "Deposit" : "Payment"
     },
     methods: {
         submit() {

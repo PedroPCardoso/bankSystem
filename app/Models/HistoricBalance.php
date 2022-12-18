@@ -25,7 +25,8 @@ class HistoricBalance extends Model
     public static $rules = [
         'Description' => ['required', 'max:90'],
         'amount' => ['required'],
-        'type' => ['required']
+        'type' => ['required'],
+        'receipt' => ['required_if:type,1']
     ];
     
 }

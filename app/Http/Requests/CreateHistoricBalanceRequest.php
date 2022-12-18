@@ -24,11 +24,8 @@ class CreateHistoricBalanceRequest extends FormRequest
      */
     public function rules()
     {
-        $type = $this->request->get('type');
         $rules = HistoricBalance::$rules;
-        if($type){
-            $rules['receipt.*'] = 'mimes:doc,pdf,docx,zip,jpeg,png,jpg,gif,svg';
-        }
+        
         return $rules;
     }
 }

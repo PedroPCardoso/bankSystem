@@ -45,8 +45,9 @@ class HistoricBalanceController extends BaseController
         $this->profile = Client::where("user_id", $user->id)->first();
         $input = $request->all();
         $input['client_id'] = $this->profile->id;
-
-        $input['receipt'] = $request->file('receipt')->store('receipts', 'public');
+        if($request->has('receipt')){
+            $input['receipt'] = $request->file('receipt')->store('receipts', 'public');
+        }
         $historics = $this-> HistoricBalanceRepository->create($input);
 
         $historics = $this->HistoricBalanceRepository->allQuery([
