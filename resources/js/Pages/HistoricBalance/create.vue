@@ -85,7 +85,8 @@ export default {
         const form = useForm({
             Description: null,
             amount: null,
-            type: null
+            type: null,
+            receipt:null
         });
         return { form };
     },
@@ -100,10 +101,10 @@ export default {
     },
     methods: {
         submit() {
-            if (this.type == 1 && this.$refs.photo){
+            if (this.type == '1' && this.$refs.photo){
                 this.form.receipt = this.$refs.photo.files[0];
             }
-
+            console.log(this.$refs.photo);
             this.form.type =  this.type;
             this.form.post(route("historics.store"));
         },

@@ -10,18 +10,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\{CreateHistoricBalanceRequest, UpdateHistoricBalanceRequest};
 use App\Repositories\HistoricBalanceRepository;
 use Illuminate\Support\Facades\Storage;
-
+use App\Services\FinanceServices;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 
 class HistoricBalanceController extends BaseController
 {
     /** @var  HistoricBalanceRepository */
     private $HistoricBalanceRepository;
     private $profile;
-
-    public function __construct(HistoricBalanceRepository $HistoricBal)
+    private $financeService;
+    public function __construct(HistoricBalanceRepository $HistoricBal, FinanceServices $financeService)
     {
         $this->HistoricBalanceRepository = $HistoricBal;
-
+        $this->financeService = $financeService;
     }
    public function index()
    {
@@ -30,7 +32,7 @@ class HistoricBalanceController extends BaseController
 
         $historics = $this-> HistoricBalanceRepository->allQuery([
             "client_id" => $this->profile->id,
-        ])->orderBy("created_at","desc")->paginate(8);
+        ])->orderBy("created_at", "desc")->paginate(8);
         return $this->sendResponse("HistoricBalance/index", ["historics" => $historics,"balance"=>$this->profile->balance]);
 
    }
@@ -45,15 +47,20 @@ class HistoricBalanceController extends BaseController
         $this->profile = Client::where("user_id", $user->id)->first();
         $input = $request->all();
         $input['client_id'] = $this->profile->id;
-        if($request->has('receipt')){
+        if($request->has('receipt') && $request->receipt ){
             $input['receipt'] = $request->file('receipt')->store('receipts', 'public');
         }
-        $historics = $this-> HistoricBalanceRepository->create($input);
-
-        $historics = $this->HistoricBalanceRepository->allQuery([
-            "client_id" => $this->profile->id,
-        ])->paginate(8);
-        return $this->sendResponse("HistoricBalance/index", ["historics" => $historics]);
+        try {
+            DB::beginTransaction();
+            $response = $this->financeService->transaction($request);
+            if($response){
+                $historics = $this-> HistoricBalanceRepository->create($input);
+            }
+            DB::commit();
+        } catch (\PDOException $e) {
+            DB::rollBack();
+        }
+        return Redirect::route('dashboard');
     }
    public function show($id,Request $request){
 
@@ -74,7 +81,6 @@ class HistoricBalanceController extends BaseController
                     'Description' => $HistoricBalance->Description
                 ]
             ]
-    
     );
     }
     /**
