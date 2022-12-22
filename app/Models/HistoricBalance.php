@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class HistoricBalance extends Model
 {
     use HasFactory;
-    CONST TYPE_DEPOSIT = 1;
     CONST TYPE_PAYMENT = 0;
+    CONST TYPE_DEPOSIT = 1;
     public $fillable = [
         'amount',
         'type',
@@ -28,5 +28,5 @@ class HistoricBalance extends Model
         'type' => ['required'],
         'receipt' => ['required_if:type,1']
     ];
-    
+
 }

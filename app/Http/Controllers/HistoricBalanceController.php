@@ -25,14 +25,15 @@ class HistoricBalanceController extends BaseController
         $this->HistoricBalanceRepository = $HistoricBal;
         $this->financeService = $financeService;
     }
-   public function index()
+   public function index(Request $request)
    {
         $user = Auth::user();
         $this->profile = Client::where("user_id", $user->id)->first();
-
-        $historics = $this-> HistoricBalanceRepository->allQuery([
+        $arrayFilter = [
             "client_id" => $this->profile->id,
-        ])->orderBy("created_at", "desc")->paginate(8);
+        ];
+        isset($request->type) ? $arrayFilter['type'] = $request->type : null;
+        $historics = $this-> HistoricBalanceRepository->allQuery($arrayFilter)->orderBy("created_at", "desc")->paginate(10);
         return $this->sendResponse("HistoricBalance/index", ["historics" => $historics,"balance"=>$this->profile->balance]);
 
    }

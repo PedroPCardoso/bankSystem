@@ -9,6 +9,20 @@ import { Link } from '@inertiajs/inertia-vue3';
 
 const showingNavigationDropdown = ref(false);
 </script>
+<script>
+import { Inertia } from "@inertiajs/inertia";
+
+export default {
+    methods:{
+        goIndex(typeValue) {
+
+            Inertia.get(route('historics.index'),{
+                type: typeValue
+            });
+        }
+    }
+}
+</script>
 
 <template>
     <div>
@@ -31,6 +45,12 @@ const showingNavigationDropdown = ref(false);
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+                                <NavLink @click="goIndex(0)" :active="route().current('historics')">
+                                    Expensive
+                                </NavLink>
+                                <NavLink @click="goIndex(1)" :active="route().current('historics')">
+                                    Incomes
                                 </NavLink>
                             </div>
                         </div>

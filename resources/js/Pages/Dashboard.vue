@@ -32,7 +32,7 @@ export default {
         <div>
 
             <indexHistoric :historics="historics" :balance="balance">
-    
+
             </indexHistoric>
         </div>
         <div class="py-12">
