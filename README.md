@@ -8,4 +8,4 @@ HistoricBalance::factory()->count(10)->create();
 * Javascript
 * PHP (Laravel)
 
-I didn't finish mainly the front part, I tried to add the validations and patterns that could be done.
+I only need notifications from users if they are unable to buy or deposit due to validations
